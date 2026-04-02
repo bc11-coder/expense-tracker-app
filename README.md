@@ -1,4 +1,8 @@
+
 # Expense Tracker App
+
+**App Logo:** 
+![App Logo](assets/images/Monetrack_AppLogo.PNG)
 
 **Beschreibung:**  
 Fullstack Projekt zum Verfolgen von Einnahmen und Ausgaben.
