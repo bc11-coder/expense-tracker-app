@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/value_switch_button.dart';
+import 'package:intl/intl.dart';
 
 class AddItemDialog extends StatefulWidget {
   final Function(String, double) onAdd;
@@ -14,6 +15,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
   final TextEditingController labelController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final NumberFormat numberFormat = NumberFormat.decimalPattern('de_DE');
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +38,33 @@ class _AddItemDialogState extends State<AddItemDialog> {
               },
             ),
             Row(
-            children: [
-            ValueSwitchButton(),
-            SizedBox(width: 10),
-            Expanded(
-              child: TextFormField(
-                controller: valueController,
-                decoration: InputDecoration(labelText: "Value"),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a value';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter only numbers';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            ],
+              children: [
+                ValueSwitchButton(),
+                SizedBox(width: 10),
+                Expanded(
+                  child: TextFormField(
+                    controller: valueController,
+                    decoration: InputDecoration(labelText: "Value"),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a value';
+                      }
+                      
+                      final cleanedValue = value
+                          .replaceAll('.', '')
+                          .replaceAll(',', '.');
+
+                      if (double.tryParse(cleanedValue) == null) {
+                        return 'Please enter only a number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -73,15 +82,16 @@ class _AddItemDialogState extends State<AddItemDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final label = labelController.text;
-              final value = double.parse(valueController.text);
-
-              widget.onAdd(label, value);
+              final value = valueController.text
+                  .replaceAll('.', '')
+                  .replaceAll(',', '.');
+              widget.onAdd(label, double.parse(value));
               Navigator.pop(context);
             }
           },
           child: Text("Add"),
         ),
-        ],
+      ],
     );
   }
 }

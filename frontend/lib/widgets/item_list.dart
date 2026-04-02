@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/item.dart';
+import 'package:intl/intl.dart';
 
 class ItemList extends StatelessWidget {
   final List<Item> items;
   final void Function(int) onDelete;
+  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
 
-  const ItemList({super.key, required this.items, required this.onDelete});
+  ItemList({super.key, required this.items, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class ItemList extends StatelessWidget {
                   Expanded(child: SizedBox()),
                   Expanded(
                     child: Text(
-                      "${item.value}€",
+                      currencyFormatter.format(item.value),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

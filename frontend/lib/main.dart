@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'screens/wallet_screen.dart';
+import 'package:frontend/models/wallet.dart';
+import 'package:frontend/screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final Wallet wallet = Wallet(label: "Wallet", totalValue: 0.0);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ExpenseTracker',
+      title: 'Monetrack',
       debugShowCheckedModeBanner: false,
-      home: WalletScreen(),
+      home: HomeScreen(),
     );
   }
 }
