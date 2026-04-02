@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/item.dart';
+import 'package:frontend/models/wallet.dart';
+import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/widgets/add_item_dialog.dart';
 import 'package:frontend/widgets/item_list.dart';
+import 'package:intl/intl.dart';
 
 class WalletScreen extends StatefulWidget {
-  const WalletScreen({super.key});
+  WalletScreen({super.key, required this.wallet});
+  final Wallet wallet;
+  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
+
 
   @override
   State<WalletScreen> createState() => _WalletScreenState();
@@ -24,8 +30,18 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       appBar: AppBar(
-        title: const Text(
-          "TrackXpense",
+        leading: BackButton(
+          color: const Color.fromARGB(255, 0, 0, 0),
+          onPressed: () {
+            Navigator.pop(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen(),
+              ),
+            );
+          },
+        ),
+        title: Text(
+          widget.wallet.label,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -64,7 +80,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       ),
                     ),
                     Text(
-                      "2,800.00€",
+                      widget.currencyFormatter.format(widget.wallet.totalValue),
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
