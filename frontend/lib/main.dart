@@ -3,11 +3,11 @@ import 'package:frontend/models/wallet.dart';
 import 'package:frontend/screens/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MonetrackApp());
 }
-
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+/// The main entry point of the application, which initializes and runs the MonetrackApp widget.
+class MonetrackApp extends StatelessWidget {
+  MonetrackApp({super.key});
   final Wallet wallet = Wallet(label: "Wallet", totalValue: 0.0);
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A custom toggle button widget that allows switching between positive and negative values (+ and -).
 class ValueSwitchButton extends StatefulWidget {
   final String offLabel;
   final String onLabel;

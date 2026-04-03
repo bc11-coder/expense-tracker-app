@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// A dialog widget which gets opened by using the AddWalletButton.
+/// It allows the user to add a new wallet with a label and (optional) initial balance
 class AddWalletDialog extends StatefulWidget {
   final Function(String, double) onAdd;
 

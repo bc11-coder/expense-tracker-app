@@ -1,3 +1,4 @@
+/// Data model representing a user, with an id, name, and email.
 class User {
   final String id;
   final String name;

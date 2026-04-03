@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/item.dart';
 import 'package:intl/intl.dart';
 
+/// Widget that displays a list of items, with swipe-to-delete functionality.
 class ItemList extends StatelessWidget {
   final List<Item> items;
   final void Function(int) onDelete;

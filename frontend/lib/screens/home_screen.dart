@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user.dart';
 import 'package:frontend/models/wallet.dart';
-import 'package:frontend/widgets/add_wallet_dialog.dart';
+import 'package:frontend/widgets/add_wallet_button.dart';
+import 'package:frontend/widgets/section_title.dart';
+import 'package:frontend/widgets/show_all_button.dart';
+import 'package:frontend/widgets/user_overview_card.dart';
 import 'package:frontend/widgets/wallet_list.dart';
+import 'package:frontend/widgets/wallets_title.dart';
 
+/// The main screen of the app, showing an overview of the user's wallets and recent transactions. 
+/// The user can add and delete new wallets and view details of existing ones.
+/// 
+/// @author Batuhan Can
+/// @Date 2026-04-03
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -14,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Wallet> wallets = [];
 
+  // Adds a new wallet to the list of wallets with a label and total value.
   void addWallet(String label, double totalValue) {
     setState(() {
       wallets.add(Wallet(label: label, totalValue: totalValue));
@@ -30,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
+        // Handles the background gradient of the screen.
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -45,97 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ListView(
             padding: const EdgeInsets.all(0),
             children: [
-              Column(
+              Column(       
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Card(
-                      color: const Color.fromARGB(255, 255, 230, 205),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 8,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Welcome, Max Mustermann!",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "To your personal expense tracker",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              "Total balance: 1.500,00€",
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 215, 75, 0),
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  UserOverviewCard(),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: Text(
-                          "My Wallets "
-                          "(${wallets.length})"
-                          ":",
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: TextButton(
-                          child: const Text("Add Wallet"),
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              215,
-                              75,
-                              0,
-                            ),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AddWalletDialog(onAdd: addWallet);
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                    // Displays the number of wallets the user has and a button to add new wallets.
+                      WalletsTitle(count: wallets.length),
+                      AddWalletButton(onAdd: addWallet),
                     ],
                   ),
+                  // Displays the list of wallets the user has, allowing them to view details or delete them.
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: WalletList(
@@ -147,52 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
+                  // Displays a section for recent transactions, with a button to show all transactions.
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: Text(
-                          "Recent Transactions :",
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: TextButton(
-                          child: const Text("Show all"),
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            foregroundColor: const Color.fromARGB(
-                              255,
-                              215,
-                              75,
-                              0,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AddWalletDialog(onAdd: addWallet);
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                      SectionTitle(title: "Recent Transactions:"),
+                      ShowAllButton(),
                     ],
                   ),
-
                 ],
               ),
             ],
