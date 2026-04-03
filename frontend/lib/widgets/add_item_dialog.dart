@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/value_switch_button.dart';
 import 'package:intl/intl.dart';
 
+/// A dialog widget which gets opened by using the AddItemButton.
+/// It allows the user to add a new item with a label and value. 
 class AddItemDialog extends StatefulWidget {
   final Function(String, double) onAdd;
 
@@ -52,7 +54,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a value';
                       }
-                      
+                      // Convert German decimal input (123,45) to Dart-compatible format (123.45)
                       final cleanedValue = value
                           .replaceAll('.', '')
                           .replaceAll(',', '.');

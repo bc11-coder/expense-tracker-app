@@ -3,6 +3,8 @@ import 'package:frontend/models/wallet.dart';
 import 'package:frontend/screens/wallet_screen.dart';
 import 'package:intl/intl.dart';
 
+/// Widget that displays a list of wallets, with swipe-to-delete functionality.
+/// Tapping on a wallet opens the WalletScreen for that wallet.
 class WalletList extends StatelessWidget {
   final List<Wallet> wallets;
   final void Function(int) onDelete;
@@ -25,8 +27,9 @@ class WalletList extends StatelessWidget {
           },
 
           background: Container(
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(18),
               color: Colors.red,
             ),
             alignment: Alignment.centerRight,
