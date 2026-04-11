@@ -9,33 +9,33 @@ Monetrack is a fullstack personal finance tracking application built to manage i
 
 The project demonstrates clean architecture principles, modular Flutter frontend development, and RESTful backend integration using Spring Boot.
 
-**Tech Stack:**
-**Frontend:** Flutter (Dart)
-**Backend:** Java Spring Boot (REST API)
-**Datenbank:** PostgreSQL
+**Tech Stack:**  
+**Frontend:** Flutter (Dart)  
+**Backend:** Java Spring Boot (REST API)  
+**Datenbank:** PostgreSQL  
 **Architecture:** Layered backend + modular Flutter structure (models, widgets, screens)
 
-**Key Festures:**
-    •   Create wallets with optional initial balance
-	•	Track income and expenses
-	•	Automatic total balance calculation
-	•	Monthly financial overview
-	•	Clean and responsive UI
-	•	Refactored and modularized codebase
+**Key Festures:**  
+ • Create wallets with optional initial balance  
+	•	Track income and expenses  
+	•	Automatic total balance calculation  
+	•	Monthly financial overview  
+	•	Clean and responsive UI  
+	•	Refactored and modularized codebase  
 
-**Engineering Focus:**
-This project emphasizes:
-	•	Clean code principles
-	•	Separation of concerns
-	•	Reusable components
-	•	Feature-branch Git workflow
-	•	Structured fullstack architecture
+**Engineering Focus:**  
+This project emphasizes:  
+	•	Clean code principles  
+	•	Separation of concerns  
+	•	Reusable components  
+	•	Feature-branch Git workflow  
+	•	Structured fullstack architecture  
 
-**Project Structure:**
-root/
-├── frontend/   → Flutter application
-├── backend/    → Spring Boot REST API
-└── README.md
+**Project Structure:**  
+root/  
+├── frontend/ → Flutter application  
+├── backend/  → Spring Boot REST API  
+└── README.md  
 
-**Purpose:**
+**Purpose:**  
 Monetrack was developed as a university fullstack project to apply modern software engineering practices in a real-world financial management use case. The focus lies on maintainable architecture, scalable structure, and professional development workflow.
