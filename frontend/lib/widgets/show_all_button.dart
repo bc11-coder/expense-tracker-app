@@ -12,7 +12,7 @@ class ShowAllButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          foregroundColor: const Color.fromARGB(255, 215, 75, 0),
+          foregroundColor: const Color.fromARGB(255, 255, 249, 243),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         onPressed: () {},

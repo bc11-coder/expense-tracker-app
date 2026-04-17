@@ -115,7 +115,6 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 suffixIcon: Icon(Icons.calendar_today),
               ),
             ),
-            // -----------------------------------------------------
           ],
         ),
       ),

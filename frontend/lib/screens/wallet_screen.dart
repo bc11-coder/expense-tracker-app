@@ -70,7 +70,10 @@ class _WalletScreenState extends State<WalletScreen> {
             color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
-        backgroundColor: const Color.fromARGB(248, 255, 211, 170),
+        backgroundColor: const Color.fromARGB(255, 91, 125, 204),
+
+
+
         centerTitle: true,
       ),
       body: Stack(
@@ -79,8 +82,9 @@ class _WalletScreenState extends State<WalletScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(248, 255, 211, 170),
-                  Color.fromARGB(255, 225, 225, 225),
+                Color.fromARGB(255, 91, 125, 204),
+                Color.fromARGB(255, 53, 79, 136),
+
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
