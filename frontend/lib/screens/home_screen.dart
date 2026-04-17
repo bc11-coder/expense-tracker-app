@@ -7,9 +7,9 @@ import 'package:frontend/widgets/user_overview_card.dart';
 import 'package:frontend/widgets/wallet_list.dart';
 import 'package:frontend/widgets/wallets_title.dart';
 
-/// The main screen of the app, showing an overview of the user's wallets and recent transactions. 
+/// The main screen of the app, showing an overview of the user's wallets and recent transactions.
 /// The user can add and delete new wallets and view details of existing ones.
-/// 
+///
 /// @author Batuhan Can
 /// @Date 2026-04-03
 class HomeScreen extends StatefulWidget {
@@ -34,28 +34,44 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset('assets/images/Monetrack_AppLogo.PNG', height: 60),
-        backgroundColor: const Color.fromARGB(255, 223, 155, 113),
         centerTitle: true,
+        backgroundColor: Colors.transparent, // wichtig!
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 255, 224, 191),
+                Color.fromARGB(255, 252, 153, 91),
+                Color.fromARGB(255, 255, 224, 191),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+        ),
       ),
+
       body: Stack(
         children: [
-        // Handles the background gradient of the screen.
+          // Handles the background gradient of the screen.
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 223, 155, 113),
-                  Color.fromARGB(255, 212, 212, 212),
+                Color.fromARGB(255, 255, 224, 191),
+                Color.fromARGB(255, 252, 153, 91),
+                Color.fromARGB(255, 255, 224, 191),
                 ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
               ),
             ),
           ),
           ListView(
             padding: const EdgeInsets.all(0),
             children: [
-              Column(       
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   UserOverviewCard(),
@@ -63,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                    // Displays the number of wallets the user has and a button to add new wallets.
+                      // Displays the number of wallets the user has and a button to add new wallets.
                       WalletsTitle(count: wallets.length),
                       AddWalletButton(onAdd: addWallet),
                     ],

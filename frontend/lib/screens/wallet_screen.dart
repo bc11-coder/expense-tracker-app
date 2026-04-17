@@ -4,13 +4,18 @@ import 'package:frontend/models/wallet.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/widgets/add_item_dialog.dart';
 import 'package:frontend/widgets/item_list.dart';
+import 'package:frontend/widgets/section_title.dart';
+import 'package:frontend/widgets/wallet_card_total.dart';
 import 'package:intl/intl.dart';
 
+/// Screen that displays the details of a single wallet.
+/// 
+/// @author Batuhan Can
 class WalletScreen extends StatefulWidget {
   WalletScreen({super.key, required this.wallet});
   final Wallet wallet;
-  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
 
+  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
 
   @override
   State<WalletScreen> createState() => _WalletScreenState();
@@ -19,96 +24,112 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   List<Item> items = [];
 
-  void addItem(String label, double value) {
+  void addItem(String label, double value, DateTime date) {
     setState(() {
-      items.add(Item(label: label, value: value));
+      items.add(Item(label: label, value: value, date: date));
     });
+  }
+
+  Map<DateTime, List<Item>> get groupedItems {
+    final Map<DateTime, List<Item>> map = {};
+
+    for (final item in items) {
+      final dateOnly = DateTime(item.date.year, item.date.month, item.date.day);
+
+      if (!map.containsKey(dateOnly)) {
+        map[dateOnly] = [];
+      }
+      // New Items appear on top of the list for each date
+      map[dateOnly]!.insert(0, item);
+    }
+
+    return map;
   }
 
   @override
   Widget build(BuildContext context) {
+    final sortedDates = groupedItems.keys.toList()
+      ..sort((a, b) => b.compareTo(a)); // newest first
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       appBar: AppBar(
         leading: BackButton(
           color: const Color.fromARGB(255, 0, 0, 0),
           onPressed: () {
             Navigator.pop(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => HomeScreen()),
             );
           },
         ),
         title: Text(
           widget.wallet.label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+        backgroundColor: const Color.fromARGB(248, 255, 211, 170),
         centerTitle: true,
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Card(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            color: const Color.fromARGB(255, 255, 204, 176),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(248, 255, 211, 170),
+                  Color.fromARGB(255, 225, 225, 225),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-            child: SizedBox(
-              width: double.infinity,
-              height: 100,
+          ),
+          Column(
+            children: [
+              WalletCardTotal(totalValue: widget.wallet.totalValue.toString()),
+              const SizedBox(height: 22),
 
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Total:",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: const Color.fromARGB(255, 215, 75, 0),
-                        ),
+              /// Grouped ItemList
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: sortedDates.length,
+                  itemBuilder: (context, dateIndex) {
+                    final date = sortedDates[dateIndex];
+                    final itemsForDate = groupedItems[date]!;
+
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 16,
                       ),
-                    ),
-                    Text(
-                      widget.currencyFormatter.format(widget.wallet.totalValue),
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 215, 75, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SectionTitle(
+                            title: DateFormat('dd.MM.yyyy').format(date),
+                          ),
+
+                          ItemList(
+                            items: itemsForDate,
+                            onDelete: (int index) {
+                              setState(() {
+                                items.remove(itemsForDate[index]);
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: 22),
 
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: ItemList(
-                items: items,
-                onDelete: (int index) {
-                  setState(() {
-                    items.removeAt(index);
-                  });
-                },
-              ),
-            ),
+              const SizedBox(height: 22),
+            ],
           ),
-
-          SizedBox(height: 22),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -118,11 +139,15 @@ class _WalletScreenState extends State<WalletScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              return AddItemDialog(onAdd: addItem);
+              return AddItemDialog(
+                onAdd: (String label, double value, DateTime date) {
+                  addItem(label, value, date);
+                },
+              );
             },
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

@@ -6,13 +6,20 @@ import 'package:intl/intl.dart';
 class ItemList extends StatelessWidget {
   final List<Item> items;
   final void Function(int) onDelete;
-  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
+  final currencyFormatter =
+      NumberFormat.currency(locale: 'de_DE', symbol: '€');
 
-  ItemList({super.key, required this.items, required this.onDelete});
+  ItemList({
+    super.key,
+    required this.items,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
@@ -20,49 +27,49 @@ class ItemList extends StatelessWidget {
         return Dismissible(
           key: ValueKey(item),
           direction: DismissDirection.endToStart,
-
-          onDismissed: (direction) {
-            onDelete(index);
-          },
+          onDismissed: (_) => onDelete(index),
 
           background: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.red,
             ),
             alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(Icons.delete, color: Colors.white),
+            padding: const EdgeInsets.only(right: 20),
+            child: const Icon(Icons.delete, color: Colors.white),
           ),
 
           child: Card(
-            margin: EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.shopping_bag,
-                    color: const Color.fromARGB(255, 215, 75, 0),
+                    color: Color.fromARGB(255, 215, 75, 0),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
+
                   Expanded(
                     child: Text(
                       item.label,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal,
-                      ),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
-                  Expanded(child: SizedBox()),
-                  Expanded(
-                    child: Text(
-                      currencyFormatter.format(item.value),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+
+                  Expanded(child: Container()),
+
+                  Text(
+                    item.value > 0
+                        ? '+${currencyFormatter.format(item.value)}'
+                        : currencyFormatter.format(item.value),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color:
+                          item.value < 0 ? Colors.red : Colors.green,
                     ),
                   ),
                 ],

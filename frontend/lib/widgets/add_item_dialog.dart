@@ -3,9 +3,9 @@ import 'package:frontend/widgets/value_switch_button.dart';
 import 'package:intl/intl.dart';
 
 /// A dialog widget which gets opened by using the AddItemButton.
-/// It allows the user to add a new item with a label and value. 
+/// It allows the user to add a new item with a label, value and date.
 class AddItemDialog extends StatefulWidget {
-  final Function(String, double) onAdd;
+  final Function(String, double, DateTime) onAdd;
 
   const AddItemDialog({super.key, required this.onAdd});
 
@@ -18,6 +18,32 @@ class _AddItemDialogState extends State<AddItemDialog> {
   final TextEditingController valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final NumberFormat numberFormat = NumberFormat.decimalPattern('de_DE');
+
+  bool _isNegative = true;
+
+  DateTime _selectedDate = DateTime.now();
+
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    labelController.dispose();
+    valueController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +65,16 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 return null;
               },
             ),
+
             Row(
               children: [
-                ValueSwitchButton(),
+                ValueSwitchButton(
+                  onChanged: (value) {
+                    setState(() {
+                      _isNegative = value;
+                    });
+                  },
+                ),
                 SizedBox(width: 10),
                 Expanded(
                   child: TextFormField(
@@ -54,7 +87,6 @@ class _AddItemDialogState extends State<AddItemDialog> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a value';
                       }
-                      // Convert German decimal input (123,45) to Dart-compatible format (123.45)
                       final cleanedValue = value
                           .replaceAll('.', '')
                           .replaceAll(',', '.');
@@ -68,6 +100,22 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 ),
               ],
             ),
+
+            const SizedBox(height: 12),
+
+            //Date Picker that opens a calendar when the user clicks on the text field.
+            TextFormField(
+              readOnly: true,
+              onTap: () => _pickDate(context),
+              controller: TextEditingController(
+                text: DateFormat('dd.MM.yyyy').format(_selectedDate),
+              ),
+              decoration: const InputDecoration(
+                labelText: "Date",
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
+            ),
+            // -----------------------------------------------------
           ],
         ),
       ),
@@ -84,10 +132,17 @@ class _AddItemDialogState extends State<AddItemDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final label = labelController.text;
-              final value = valueController.text
+              final rawValue = valueController.text
                   .replaceAll('.', '')
                   .replaceAll(',', '.');
-              widget.onAdd(label, double.parse(value));
+
+              double value = double.parse(rawValue);
+
+              if (_isNegative) {
+                value = -value;
+              }
+
+              widget.onAdd(label, value, _selectedDate);
               Navigator.pop(context);
             }
           },
