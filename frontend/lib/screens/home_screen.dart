@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Image.asset('assets/images/Monetrack_AppLogo.PNG', height: 60),
         centerTitle: true,
-        backgroundColor: Colors.transparent, // wichtig!
+        backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
