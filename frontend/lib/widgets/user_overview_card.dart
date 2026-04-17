@@ -9,7 +9,7 @@ class UserOverviewCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Card(
-        color: const Color.fromARGB(255, 255, 230, 205),
+        color: const Color.fromARGB(255, 255, 243, 230),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 8,
         child: Padding(
