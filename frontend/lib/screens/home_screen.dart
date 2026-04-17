@@ -35,15 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Image.asset('assets/images/Monetrack_AppLogo.PNG', height: 60),
         centerTitle: true,
-        backgroundColor: Colors.transparent, // wichtig!
+        backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 255, 224, 191),
-                Color.fromARGB(255, 252, 153, 91),
-                Color.fromARGB(255, 255, 224, 191),
+                Color.fromARGB(255, 53, 79, 136),
+                Color.fromARGB(255, 9, 35, 101),
+                Color.fromARGB(255, 53, 79, 136),
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -59,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                Color.fromARGB(255, 255, 224, 191),
-                Color.fromARGB(255, 252, 153, 91),
-                Color.fromARGB(255, 255, 224, 191),
+                Color.fromARGB(255, 53, 79, 136),
+                Color.fromARGB(255, 9, 35, 101),
+                Color.fromARGB(255, 53, 79, 136),
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
