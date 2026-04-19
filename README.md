@@ -45,25 +45,25 @@ __________________________
 # Github syntax conventons
 
 **Issue naming:** 
-Syntax:  
-<type>: short clear description  
+Syntax:
+<type>: short clear description
 
-Example:  
-style: update app design with blue theme  
+Example:
+style: update app design with blue theme
 
 **Branch naming:** 
-Syntax:  
-<type>/<issue-number>-short-description  
+Syntax:
+<type>/<issue-number>-short-description
 
-Example:  
-style/9-update-app-design  
+Example:
+style/9-update-app-design
 
 **Commit messages:** 
-Syntax:  
-<type>(scope): short description  
+Syntax:
+<type>(scope): short description
 
-Example:  
-style(ui): update dialog background colors  
+Example:
+style(ui): update dialog background colors
 
 
 
