@@ -39,3 +39,31 @@ root/
 
 **Purpose:**  
 Monetrack was developed as a university fullstack project to apply modern software engineering practices in a real-world financial management use case. The focus lies on maintainable architecture, scalable structure, and professional development workflow.
+
+__________________________
+
+# Github syntax conventons
+
+**Issue naming:** 
+Syntax:  
+<type>: short clear description  
+
+Example:  
+style: update app design with blue theme  
+
+**Branch naming:** 
+Syntax:  
+<type>/<issue-number>-short-description  
+
+Example:  
+style/9-update-app-design  
+
+**Commit messages:** 
+Syntax:  
+<type>(scope): short description  
+
+Example:  
+style(ui): update dialog background colors  
+
+
+
