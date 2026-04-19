@@ -44,7 +44,7 @@ __________________________
 
 # Github syntax conventons
 
-**Issue naming:** 
+**Issue naming:**  
 Syntax:  
 -type-: short clear description  
 
