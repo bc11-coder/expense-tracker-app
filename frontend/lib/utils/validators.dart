@@ -1,4 +1,3 @@
-
 /// Collection of validation helpers for form input fields.
 class Validators {
   static String? required(String? value, String message) {

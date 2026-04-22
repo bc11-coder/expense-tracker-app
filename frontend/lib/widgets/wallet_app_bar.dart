@@ -5,27 +5,25 @@ import 'package:frontend/models/wallet.dart';
 class WalletAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Wallet wallet;
 
-    const WalletAppBar({ super.key, required this.wallet });
+  const WalletAppBar({super.key, required this.wallet});
 
-    @override
+  @override
   Widget build(BuildContext context) {
-        return AppBar(
-            leading: const BackButton(
-                color: Color.fromARGB(255, 0, 0, 0),
-      ),
-        title: Text(
-            wallet.label,
-            style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 0, 0),
+    return AppBar(
+      leading: const BackButton(color: Color.fromARGB(255, 0, 0, 0)),
+      title: Text(
+        wallet.label,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Color.fromARGB(255, 0, 0, 0),
         ),
       ),
-        backgroundColor: const Color.fromARGB(255, 110, 146, 232),
-            centerTitle: true,
+      backgroundColor: const Color.fromARGB(255, 110, 146, 232),
+      centerTitle: true,
     );
-    }
+  }
 
-    @override
+  @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

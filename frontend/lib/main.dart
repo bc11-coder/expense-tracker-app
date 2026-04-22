@@ -5,6 +5,7 @@ import 'package:frontend/screens/home_screen.dart';
 void main() {
   runApp(MonetrackApp());
 }
+
 /// The main entry point of the application, which initializes and runs the MonetrackApp widget.
 class MonetrackApp extends StatelessWidget {
   MonetrackApp({super.key});
