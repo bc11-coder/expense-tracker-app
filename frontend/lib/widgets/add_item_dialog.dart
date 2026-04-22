@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/date_picker_utils.dart';
+import 'package:frontend/utils/value_parser.dart';
 import 'package:frontend/widgets/value_switch_button.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/utils/date_format_utils.dart';
+import 'package:frontend/utils/validators.dart';
 
 /// A dialog widget which gets opened by using the AddItemButton.
 /// It allows the user to add a new item with a label, value and date.
@@ -17,31 +20,25 @@ class _AddItemDialogState extends State<AddItemDialog> {
   final TextEditingController labelController = TextEditingController();
   final TextEditingController valueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final NumberFormat numberFormat = NumberFormat.decimalPattern('de_DE');
+  late final TextEditingController _dateController;
 
   bool _isNegative = true;
 
   DateTime _selectedDate = DateTime.now();
 
-  Future<void> _pickDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+  @override
+  void initState() {
+    super.initState();
+    _dateController = TextEditingController(
+      text: DateFormatUtils.format(_selectedDate),
     );
-
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
   }
 
   @override
   void dispose() {
     labelController.dispose();
     valueController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
@@ -58,14 +55,9 @@ class _AddItemDialogState extends State<AddItemDialog> {
             TextFormField(
               controller: labelController,
               decoration: InputDecoration(labelText: "Label"),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a label';
-                }
-                return null;
-              },
+              validator: (value) =>
+                  Validators.required(value, 'Please enter a label'),
             ),
-
             Row(
               children: [
                 ValueSwitchButton(
@@ -83,33 +75,32 @@ class _AddItemDialogState extends State<AddItemDialog> {
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a value';
-                      }
-                      final cleanedValue = value
-                          .replaceAll('.', '')
-                          .replaceAll(',', '.');
-
-                      if (double.tryParse(cleanedValue) == null) {
-                        return 'Please enter only a number';
-                      }
-                      return null;
-                    },
+                    validator: (value) =>
+                        Validators.number(value, 'Please enter only a number'),
                   ),
                 ),
               ],
             ),
-
             const SizedBox(height: 12),
 
-            //Date Picker that opens a calendar when the user clicks on the text field.
+            // Date Picker that opens a calendar when the user clicks on the text field.
             TextFormField(
               readOnly: true,
-              onTap: () => _pickDate(context),
-              controller: TextEditingController(
-                text: DateFormat('dd.MM.yyyy').format(_selectedDate),
-              ),
+              onTap: () async {
+                final picked = await DatePickerUtils.pickDate(
+                  context,
+                  _selectedDate,
+                );
+                if (picked != null) {
+                  setState(() {
+                    _selectedDate = picked;
+                    _dateController.text = DateFormatUtils.format(
+                      _selectedDate,
+                    );
+                  });
+                }
+              },
+              controller: _dateController,
               decoration: const InputDecoration(
                 labelText: "Date",
                 suffixIcon: Icon(Icons.calendar_today),
@@ -131,15 +122,11 @@ class _AddItemDialogState extends State<AddItemDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final label = labelController.text;
-              final rawValue = valueController.text
-                  .replaceAll('.', '')
-                  .replaceAll(',', '.');
 
-              double value = double.parse(rawValue);
-
-              if (_isNegative) {
-                value = -value;
-              }
+              final value = ValueParser.parse(
+                valueController.text,
+                isNegative: _isNegative,
+              );
 
               widget.onAdd(label, value, _selectedDate);
               Navigator.pop(context);

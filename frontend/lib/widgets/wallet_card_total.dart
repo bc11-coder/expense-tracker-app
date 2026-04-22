@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/utils/currency_utils.dart';
 
+/// Card widget that displays the total balance of a wallet.
 class WalletCardTotal extends StatelessWidget {
   WalletCardTotal({super.key, required this.totalValue});
 
-  final String totalValue;
-  final currencyFormatter =
-      NumberFormat.currency(locale: 'de_DE', symbol: '€');
+  final double totalValue;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class WalletCardTotal extends StatelessWidget {
           width: 3.0,
         ),
       ),
-      color: Colors.transparent, 
+      color: Colors.transparent,
       child: Ink(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -51,7 +50,7 @@ class WalletCardTotal extends StatelessWidget {
                 ),
               ),
               Text(
-                currencyFormatter.format(double.parse(totalValue)),
+                CurrencyUtils.format(totalValue),
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
