@@ -59,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                Color.fromARGB(255, 53, 79, 136),
-                Color.fromARGB(255, 9, 35, 101),
-                Color.fromARGB(255, 53, 79, 136),
+                  Color.fromARGB(255, 53, 79, 136),
+                  Color.fromARGB(255, 9, 35, 101),
+                  Color.fromARGB(255, 53, 79, 136),
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,

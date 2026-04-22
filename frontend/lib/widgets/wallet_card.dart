@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/wallet.dart';
 import 'package:intl/intl.dart';
 
+/// Card widget that displays a single wallet with its label and total value.
 class WalletCard extends StatelessWidget {
   WalletCard({super.key, required this.wallet});
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/app_texts.dart';
 
 /// Widget that displays an overview card with a welcome message and total balance of the user.
 class UserOverviewCard extends StatelessWidget {
@@ -10,9 +11,7 @@ class UserOverviewCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Card(
         elevation: 0, // Shadow kommt vom Container
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: Colors.transparent,
         child: Container(
           decoration: BoxDecoration(
@@ -44,7 +43,7 @@ class UserOverviewCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Welcome, Max Mustermann!",
+                AppTexts.welcome,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -53,11 +52,8 @@ class UserOverviewCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                "To your personal expense tracker",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
+                AppTexts.subtitle,
+                style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
               const SizedBox(height: 16),
 

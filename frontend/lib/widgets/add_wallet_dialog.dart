@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/utils/value_parser.dart';
 
 /// A dialog widget which gets opened by using the AddWalletButton.
 /// It allows the user to add a new wallet with a label and (optional) initial balance
@@ -17,7 +17,6 @@ class _AddWalletDialogState extends State<AddWalletDialog> {
   final TextEditingController initialBalanceController =
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final NumberFormat numberFormat = NumberFormat.decimalPattern('de_DE');
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +51,7 @@ class _AddWalletDialogState extends State<AddWalletDialog> {
                   return null; // optional field
                 }
 
-                final cleanedValue = value
-                    .replaceAll('.', '')
-                    .replaceAll(',', '.');
-
-                if (double.tryParse(cleanedValue) == null) {
+                if (ValueParser.tryParseOptional(value) == null) {
                   return 'Please enter a valid number';
                 }
 
@@ -83,11 +78,11 @@ class _AddWalletDialogState extends State<AddWalletDialog> {
               double initialBalance = 0.0;
 
               if (initialBalanceController.text.isNotEmpty) {
-                final cleanedValue = initialBalanceController.text
-                    .replaceAll('.', '')
-                    .replaceAll(',', '.');
-
-                initialBalance = double.parse(cleanedValue);
+                initialBalance =
+                    ValueParser.tryParseOptional(
+                      initialBalanceController.text,
+                    ) ??
+                    0.0;
               }
               widget.onAdd(label, initialBalance);
 

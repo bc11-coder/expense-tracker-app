@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/item.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/utils/currency_utils.dart';
 
 /// Widget that displays a list of items, with swipe-to-delete functionality.
 class ItemList extends StatelessWidget {
   final List<Item> items;
-  final void Function(int) onDelete;
-  final currencyFormatter =
-      NumberFormat.currency(locale: 'de_DE', symbol: '€');
+  final void Function(Item) onDelete;
 
-  ItemList({
-    super.key,
-    required this.items,
-    required this.onDelete,
-  });
+  ItemList({super.key, required this.items, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +21,7 @@ class ItemList extends StatelessWidget {
         return Dismissible(
           key: ValueKey(item),
           direction: DismissDirection.endToStart,
-          onDismissed: (_) => onDelete(index),
-
+          onDismissed: (_) => onDelete(item),
           background: Container(
             margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             decoration: BoxDecoration(
@@ -62,14 +55,11 @@ class ItemList extends StatelessWidget {
                   Expanded(child: Container()),
 
                   Text(
-                    item.value > 0
-                        ? '+${currencyFormatter.format(item.value)}'
-                        : currencyFormatter.format(item.value),
+                    CurrencyUtils.formatSigned(item.value),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color:
-                          item.value < 0 ? Colors.red : Colors.green,
+                      color: item.value < 0 ? Colors.red : Colors.green,
                     ),
                   ),
                 ],
