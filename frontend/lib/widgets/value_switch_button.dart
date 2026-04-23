@@ -25,9 +25,7 @@ class _ValueSwitchButtonState extends State<ValueSwitchButton> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-        ),
+        Padding(padding: const EdgeInsets.symmetric(vertical: 8.0)),
         ToggleButtons(
           borderRadius: BorderRadius.circular(8),
           isSelected: [_isFirst, !_isFirst],
@@ -40,19 +38,17 @@ class _ValueSwitchButtonState extends State<ValueSwitchButton> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(widget.offLabel,
-              style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              ),),
+              child: Text(
+                widget.offLabel,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(widget.onLabel,
-              style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              ),),
+              child: Text(
+                widget.onLabel,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
             ),
           ],
         ),
@@ -60,4 +56,3 @@ class _ValueSwitchButtonState extends State<ValueSwitchButton> {
     );
   }
 }
-

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Button that shows all existing items.
-/// The parent must provide the onAdd callback.
 class ShowAllButton extends StatelessWidget {
-  const ShowAllButton({super.key});
+  final VoidCallback onPressed;
+  final String label;
+
+  const ShowAllButton({
+    super.key,
+    required this.onPressed,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +20,8 @@ class ShowAllButton extends StatelessWidget {
           foregroundColor: const Color.fromARGB(255, 255, 249, 243),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        onPressed: () {},
-        child: const Text("Show all"),
+        onPressed: onPressed,
+        child: Text(label),
       ),
     );
   }

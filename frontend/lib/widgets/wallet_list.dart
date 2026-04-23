@@ -10,8 +10,14 @@ class WalletList extends StatelessWidget {
   final List<Wallet> wallets;
   final void Function(int) onDelete;
   final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
+  final VoidCallback onReturn;
 
-  WalletList({super.key, required this.wallets, required this.onDelete});
+  WalletList({
+    super.key,
+    required this.wallets,
+    required this.onDelete,
+    required this.onReturn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +46,15 @@ class WalletList extends StatelessWidget {
 
           child: InkWell(
             borderRadius: BorderRadius.circular(18),
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => WalletScreen(wallet: wallet),
                 ),
               );
+
+              onReturn(); // trigger rebuild
             },
             child: WalletCard(wallet: wallet),
           ),

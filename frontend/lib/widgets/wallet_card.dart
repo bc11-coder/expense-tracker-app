@@ -7,8 +7,7 @@ class WalletCard extends StatelessWidget {
   WalletCard({super.key, required this.wallet});
 
   final Wallet wallet;
-  final currencyFormatter =
-      NumberFormat.currency(locale: 'de_DE', symbol: '€');
+  final currencyFormatter = NumberFormat.currency(locale: 'de_DE', symbol: '€');
 
   @override
   Widget build(BuildContext context) {

@@ -5,10 +5,11 @@ import 'package:frontend/screens/home_screen.dart';
 void main() {
   runApp(MonetrackApp());
 }
+
 /// The main entry point of the application, which initializes and runs the MonetrackApp widget.
 class MonetrackApp extends StatelessWidget {
   MonetrackApp({super.key});
-  final Wallet wallet = Wallet(label: "Wallet", totalValue: 0.0);
+  final Wallet wallet = Wallet(label: "Wallet");
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/item.dart';
 import 'package:frontend/models/wallet.dart';
 import 'package:frontend/widgets/add_wallet_button.dart';
 import 'package:frontend/widgets/section_title.dart';
@@ -6,6 +7,7 @@ import 'package:frontend/widgets/show_all_button.dart';
 import 'package:frontend/widgets/user_overview_card.dart';
 import 'package:frontend/widgets/wallet_list.dart';
 import 'package:frontend/widgets/wallets_title.dart';
+import 'package:frontend/widgets/all_items_list.dart';
 
 /// The main screen of the app, showing an overview of the user's wallets and recent transactions.
 /// The user can add and delete new wallets and view details of existing ones.
@@ -22,11 +24,57 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Wallet> wallets = [];
 
+  bool showAllTransactions = false;
+
   // Adds a new wallet to the list of wallets with a label and total value.
-  void addWallet(String label, double totalValue) {
+  void addWallet(String label, double initialBalance) {
     setState(() {
-      wallets.add(Wallet(label: label, totalValue: totalValue));
+      final wallet = Wallet(label: label);
+
+      if (initialBalance != 0) {
+        wallet.addItem(
+          Item(
+            label: "Initial Balance",
+            value: initialBalance,
+            date: DateTime.now(),
+          ),
+        );
+      }
+
+      wallets.add(wallet);
     });
+  }
+
+  /// Collects ALL items from all wallets (global transaction list)
+  List<Item> get allItems {
+    final List<Item> items = [];
+
+    for (final wallet in wallets) {
+      items.addAll(wallet.items);
+    }
+
+    items.sort((a, b) => b.date.compareTo(a.date)); // newest first
+    return items;
+  }
+
+  List<Item> get previewItems {
+    final items = allItems;
+    return items.length <= 3 ? items : items.sublist(0, 3);
+  }
+
+  List<Item> get sortedItems {
+    final items = allItems;
+    return items; // already sorted newest first
+  }
+
+  List<Item> get top3Items {
+    final items = sortedItems;
+    return items.length <= 3 ? items : items.sublist(0, 3);
+  }
+
+  List<Item> get remainingItems {
+    final items = sortedItems;
+    return items.length <= 3 ? [] : items.sublist(3);
   }
 
   @override
@@ -54,7 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: Stack(
         children: [
-          // Handles the background gradient of the screen.
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -68,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
           ListView(
             padding: const EdgeInsets.all(0),
             children: [
@@ -76,15 +124,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   UserOverviewCard(),
                   const SizedBox(height: 16),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Displays the number of wallets the user has and a button to add new wallets.
                       WalletsTitle(count: wallets.length),
                       AddWalletButton(onAdd: addWallet),
                     ],
                   ),
-                  // Displays the list of wallets the user has, allowing them to view details or delete them.
+
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: WalletList(
@@ -94,16 +142,34 @@ class _HomeScreenState extends State<HomeScreen> {
                           wallets.removeAt(index);
                         });
                       },
+                      onReturn: () {
+                        setState(() {});
+                      },
                     ),
                   ),
-                  // Displays a section for recent transactions, with a button to show all transactions.
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SectionTitle(title: "Recent Transactions:"),
-                      ShowAllButton(),
+                      ShowAllButton(
+                        label: showAllTransactions ? "Show less" : "Show all",
+                        onPressed: () {
+                          setState(() {
+                            showAllTransactions = !showAllTransactions;
+                          });
+                        },
+                      ),
                     ],
                   ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: AllItemsList(
+                        wallets: wallets,
+                        expanded: showAllTransactions,
+                      ),
+                    ),
                 ],
               ),
             ],

@@ -1,23 +1,28 @@
 import 'package:frontend/models/item.dart';
+import 'package:frontend/models/wallet.dart';
 
 /// Controller that manages wallet items and provides grouping and sorting logic by date.
 class WalletItemsController {
-  final List<Item> items = [];
+  final Wallet wallet;
+
+  WalletItemsController(this.wallet);
 
   void addItem(String label, double value, DateTime date) {
-    items.add(Item(label: label, value: value, date: date));
+    wallet.addItem(Item(label: label, value: value, date: date));
   }
 
   void removeItem(Item item) {
-    items.remove(item);
+    wallet.removeItem(item);
   }
+
+  List<Item> get items => wallet.items;
 
   DateTime _normalize(DateTime d) => DateTime(d.year, d.month, d.day);
 
   Map<DateTime, List<Item>> get groupedItems {
     final Map<DateTime, List<Item>> map = {};
 
-    for (final item in items) {
+    for (final item in wallet.items) {
       final dateOnly = _normalize(item.date);
 
       map.putIfAbsent(dateOnly, () => []);
@@ -28,7 +33,8 @@ class WalletItemsController {
   }
 
   List<DateTime> get sortedDates {
-    final dates = items.map((e) => _normalize(e.date)).toSet().toList();
+    final dates = wallet.items.map((e) => _normalize(e.date)).toSet().toList();
+
     dates.sort((a, b) => b.compareTo(a));
     return dates;
   }
