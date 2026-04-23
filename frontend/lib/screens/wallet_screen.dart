@@ -19,7 +19,13 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-  final WalletItemsController controller = WalletItemsController();
+  late final WalletItemsController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WalletItemsController(widget.wallet);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +83,7 @@ class _WalletScreenState extends State<WalletScreen> {
         onAdd: (label, value, date) {
           setState(() {
             controller.addItem(label, value, date);
+
           });
         },
       ),
