@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/wallet.dart';
+import 'package:frontend/utils/app_gradients.dart';
 import 'package:intl/intl.dart';
 
 /// Card widget that displays a single wallet with its label and total value.
@@ -25,14 +26,7 @@ class WalletCard extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 53, 79, 136),
-              Color.fromARGB(255, 91, 125, 204),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          gradient: WalletCardGradients.walletCard,
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
         child: SizedBox(

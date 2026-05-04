@@ -14,6 +14,7 @@ class ValueSwitchButton extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ValueSwitchButtonState createState() => _ValueSwitchButtonState();
 }
 

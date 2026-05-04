@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/wallet_items_controller.dart';
 import 'package:frontend/models/wallet.dart';
+import 'package:frontend/utils/app_gradients.dart';
+import 'package:frontend/utils/item_date_utils.dart';
 import 'package:frontend/widgets/wallet_app_bar.dart';
 import 'package:frontend/widgets/wallet_card_total.dart';
 import 'package:frontend/widgets/wallet_date_section.dart';
@@ -29,8 +31,8 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final groupedItems = controller.groupedItems;
-    final sortedDates = controller.sortedDates;
+    final groupedItems = ItemDateUtils.groupByDate(controller.items);
+    final sortedDates = ItemDateUtils.sortedDates(controller.items);
 
     return Scaffold(
       appBar: WalletAppBar(wallet: widget.wallet),
@@ -38,14 +40,7 @@ class _WalletScreenState extends State<WalletScreen> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 110, 146, 232),
-                  Color.fromARGB(255, 53, 79, 136),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              gradient: WalletScreenGradients.mainVertical,
             ),
           ),
           Column(
@@ -83,7 +78,6 @@ class _WalletScreenState extends State<WalletScreen> {
         onAdd: (label, value, date) {
           setState(() {
             controller.addItem(label, value, date);
-
           });
         },
       ),
