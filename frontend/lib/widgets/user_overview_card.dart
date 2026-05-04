@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/app_gradients.dart';
 import 'package:frontend/utils/app_texts.dart';
+import 'package:frontend/widgets/total_balance_text.dart';
 
 /// Widget that displays an overview card with a welcome message and total balance of the user.
 class UserOverviewCard extends StatelessWidget {
-  const UserOverviewCard({super.key});
+  final double totalBalance;
+
+  const UserOverviewCard({super.key, required this.totalBalance});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Card(
-        elevation: 0, // Shadow kommt vom Container
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: Colors.transparent,
         child: Container(
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 53, 79, 136),
-                Color.fromARGB(255, 91, 125, 204),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            gradient: UserOverviewCardGradients.userOverviewCard,
             borderRadius: BorderRadius.circular(16),
-
             border: Border.all(
               color: Colors.white.withValues(alpha: 0.2),
               width: 1.5,
             ),
-
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.25),
@@ -57,29 +52,7 @@ class UserOverviewCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              Stack(
-                children: [
-                  Text(
-                    "Total balance: 1.500,00€",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 2
-                        ..color = const Color.fromARGB(255, 215, 75, 0),
-                    ),
-                  ),
-                  const Text(
-                    "Total balance: 1.500,00€",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 204, 183),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+              TotalBalanceText(amount: totalBalance),
             ],
           ),
         ),

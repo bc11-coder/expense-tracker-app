@@ -7,7 +7,7 @@ class ItemList extends StatelessWidget {
   final List<Item> items;
   final void Function(Item) onDelete;
 
-  ItemList({super.key, required this.items, required this.onDelete});
+  const ItemList({super.key, required this.items, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {

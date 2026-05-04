@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Reusable button to toggle between collapsed and expanded list views.
 class ShowAllButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;

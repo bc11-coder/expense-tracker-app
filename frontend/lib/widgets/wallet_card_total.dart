@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/app_gradients.dart';
 import 'package:frontend/utils/currency_utils.dart';
 
 /// Card widget that displays the total balance of a wallet.
 class WalletCardTotal extends StatelessWidget {
-  WalletCardTotal({super.key, required this.totalValue});
+  const WalletCardTotal({super.key, required this.totalValue});
 
   final double totalValue;
 
@@ -23,14 +24,7 @@ class WalletCardTotal extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 53, 79, 136),
-              Color.fromARGB(255, 91, 125, 204),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          gradient: WalletCardTotalGradients.walletCardTotal,
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
         child: Padding(

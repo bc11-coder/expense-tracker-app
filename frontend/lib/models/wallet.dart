@@ -16,7 +16,7 @@ class Wallet {
     items.add(item);
   }
 
-  /// Removes an item from the wallet.
+  /// Removes an item from the wallet.  
   void removeItem(Item item) {
     items.remove(item);
   }
