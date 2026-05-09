@@ -7,6 +7,7 @@ import 'package:frontend/widgets/wallet_app_bar.dart';
 import 'package:frontend/widgets/wallet_card_total.dart';
 import 'package:frontend/widgets/wallet_date_section.dart';
 import 'package:frontend/widgets/add_item_button.dart';
+import 'package:frontend/widgets/wallet_value_chart.dart';
 
 /// Screen that displays the details of a single wallet.
 ///
@@ -23,10 +24,36 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   late final WalletItemsController controller;
 
+  final ScrollController _scrollController = ScrollController();
+  bool _showScrollToTop = false;
+
   @override
   void initState() {
     super.initState();
     controller = WalletItemsController(widget.wallet);
+
+    _scrollController.addListener(() {
+      final show = _scrollController.offset > 20;
+      if (show != _showScrollToTop) {
+        setState(() {
+          _showScrollToTop = show;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -43,17 +70,27 @@ class _WalletScreenState extends State<WalletScreen> {
               gradient: WalletScreenGradients.mainVertical,
             ),
           ),
-          Column(
-            children: [
-              WalletCardTotal(totalValue: widget.wallet.totalValue),
-              const SizedBox(height: 22),
+          CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: WalletCardTotal(
+                  totalValue: widget.wallet.totalValue,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: WalletValueChart(
+                  items: controller.items,
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 22),
+              ),
 
               /// Grouped ItemList
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: sortedDates.length,
-                  itemBuilder: (context, dateIndex) {
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, dateIndex) {
                     final date = sortedDates[dateIndex];
                     final itemsForDate = groupedItems[date]!;
 
@@ -67,21 +104,50 @@ class _WalletScreenState extends State<WalletScreen> {
                       },
                     );
                   },
+                  childCount: sortedDates.length,
                 ),
               ),
-              const SizedBox(height: 22),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 100),
+              ),
             ],
           ),
         ],
       ),
-      floatingActionButton: AddItemButton(
-        onAdd: (label, value, date) {
-          setState(() {
-            controller.addItem(label, value, date);
-          });
-        },
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 200),
+            opacity: _showScrollToTop ? 1 : 0,
+            child: _showScrollToTop
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: FloatingActionButton(
+                      heroTag: "scrollToTop",
+                      mini: true,
+                      backgroundColor:
+                          Colors.grey.withAlpha(180),
+                      onPressed: _scrollToTop,
+                      child: const Icon(
+                        Icons.keyboard_arrow_up,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
+          ),
+          AddItemButton(
+            onAdd: (label, value, date) {
+              setState(() {
+                controller.addItem(label, value, date);
+              });
+            },
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat,
     );
   }
 }
